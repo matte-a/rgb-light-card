@@ -126,13 +126,6 @@ class RGBLightCard extends HTMLElement {
         }
         const _color = structuredClone(color);
 
-        const serviceData = {
-            entity_id: this.config.entity,
-            ..._color,
-            icon_color: undefined,
-            type: undefined,
-            label: undefined,
-        };
 
         if (color.brightness_pct != undefined) {
             delete _color.brightness_pct;
@@ -143,6 +136,15 @@ class RGBLightCard extends HTMLElement {
                 });
             }, 100);
         }
+
+        const serviceData = {
+            entity_id: this.config.entity,
+            ..._color,
+            icon_color: undefined,
+            type: undefined,
+            label: undefined,
+        };
+
         this._hass.callService('light', 'turn_on', serviceData);
     }
 
