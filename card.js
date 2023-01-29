@@ -117,8 +117,9 @@ class RGBLightCard extends HTMLElement {
             this.update();
         }
     }
-
+    timeout;
     applyColor(color) {
+        clearTimeout(this.timeout);
         if (color.type === 'call-service') {
             const [domain, service] = color.service.split('.');
             this._hass.callService(domain, service, color.service_data || {});
@@ -143,7 +144,7 @@ class RGBLightCard extends HTMLElement {
         ///i need to to this cause tuya light won't handle change between white/rgb if brightness is set. Adding a delay seems to work
         this._hass.callService('light', 'turn_on', serviceData)
             .then(() => {
-                setTimeout(() => {
+                this.timeout = setTimeout(() => {
                     this._hass.callService("light", "turn_on", {
                         entity_id: this.config.entity,
                         brightness_pct: color.brightness_pct,
