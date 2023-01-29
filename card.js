@@ -131,6 +131,16 @@ class RGBLightCard extends HTMLElement {
             type: undefined,
             label: undefined,
         };
+          if (color.brightness_pct != undefined) {
+              const brightness = color.brightness_pct;
+              delete color.brightness_pct;
+              setTimeout(() => {
+                this._hass.callService("light", "turn_on", {
+                  entity_id: this.config.entity,
+                  brightness_pct: brightness,
+                });
+              }, 100);
+            }
         this._hass.callService('light', 'turn_on', serviceData);
     }
 
