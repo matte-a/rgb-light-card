@@ -129,12 +129,7 @@ class RGBLightCard extends HTMLElement {
 
         if (color.brightness_pct != undefined) {
             delete _color.brightness_pct;
-            setTimeout(() => {
-                this._hass.callService("light", "turn_on", {
-                    entity_id: this.config.entity,
-                    brightness_pct: color.brightness_pct,
-                });
-            }, 100);
+
         }
 
         const serviceData = {
@@ -145,7 +140,15 @@ class RGBLightCard extends HTMLElement {
             label: undefined,
         };
 
-        this._hass.callService('light', 'turn_on', serviceData);
+        this._hass.callService('light', 'turn_on', serviceData)
+            .then(() => {
+                setTimeout(() => {
+                    this._hass.callService("light", "turn_on", {
+                        entity_id: this.config.entity,
+                        brightness_pct: color.brightness_pct,
+                    });
+                }, 500);
+            });
     }
 
     setVisibility() {
