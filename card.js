@@ -140,6 +140,7 @@ class RGBLightCard extends HTMLElement {
             label: undefined,
         };
 
+        ///i need to to this cause tuya light won't handle change between white/rgb if brightness is set. Adding a delay seems to work
         this._hass.callService('light', 'turn_on', serviceData)
             .then(() => {
                 setTimeout(() => {
